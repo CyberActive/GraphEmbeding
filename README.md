@@ -7,8 +7,9 @@ Graphs can be used for visualization of complex data, for logical reasoning, for
 
 The number of different ways to encode, or embed, graphs is constantly growning. It is not a goal of this repository  to present a complete, or even imcomplete list of graph embeddings developed up-to-date. Rather, the goal is to illustrate application of several graph embedding algorithms to one graph data set. 
 
-## Graph Data Set
+## Graph Dataset
 We use the  [StreamSpot] data set
 
 [StreamSpot]: https://github.com/sbustreamspot/sbustreamspot-data
 The StreamSpot dataset is composed of 600 provenance graphs derived from 5 benign and 1 attack scenarios. 
+See the [StreamSpot Explore Data.ipynb notebook](https://github.com/CyberActive/GraphEmbeding/blob/main/StreamSpot%20Explore%20Data.ipynb) for a detailed analysis of the dataset
