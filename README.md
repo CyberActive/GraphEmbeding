@@ -11,3 +11,12 @@ The number of different ways to encode, or embed, graphs is constantly growning.
 We use the  [StreamSpot] data set
 
 [StreamSpot]: https://github.com/sbustreamspot/sbustreamspot-data
+This repository contains the `ALL` dataset, which includes edges from all the
+600 benign and attack scenario graphs. 
+   
+   1. YouTube (graph ID's 0 - 99)
+   2. GMail (graph ID's 100 - 199)
+   3. VGame (graph ID's 200 - 299)
+   4. Drive-by-download attack (graph ID's 300 - 399)
+   5. Download (graph ID's 400 - 499)
+   6. CNN (graph ID's 500 - 599)
