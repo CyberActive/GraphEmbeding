@@ -16,10 +16,10 @@ See the [StreamSpot Explore Data.ipynb notebook](https://github.com/CyberActive/
 
 It is important to visualize data before doing any ML. This falls in the category if descriptive analytics. 
 
-The size of each graph is too big to visualize. Moreover, each graph is really a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to visualize a small subsets of the data. We can see that there are roughly speaking three types of subgraphs: 
+The size of each graph is in tens and hundreds of thousands of edges; it is too big to visualize. Moreover, each graph is really a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to visualize a small subsets of the data. We can see that there are roughly speaking three types of subgraphs: 
 - a process is performing single I/O operations with a large number of files
-- a process is performing multiple I/O operations with a small number of files
-- several processes and threads are performing I/O operations with several potentially overlapping files
+- a process is performing multiple I/O operations with a small number of files, stin, and stdout
+- several processes and threads are performing I/O operations with several potentially overlapping files, stin, and stdout
 
 ## Graph Embedding
 
