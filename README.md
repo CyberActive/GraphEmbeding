@@ -13,3 +13,10 @@ We use the  [StreamSpot] data set
 [StreamSpot]: https://github.com/sbustreamspot/sbustreamspot-data
 The StreamSpot dataset is composed of 600 provenance graphs derived from 5 benign and 1 attack scenarios. 
 See the [StreamSpot Explore Data.ipynb notebook](https://github.com/CyberActive/GraphEmbeding/blob/main/StreamSpot%20Explore%20Data.ipynb) for a detailed analysis of the dataset
+
+It is important to visualize data before doing any ML. This falls in the category if descriptive analytics. 
+
+The size of each graph is too big to visualize. Moreover, each graph is really a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to visualize a small subsets of the data. We can see that there are roughly speaking three types of subgraphs: 
+- a process is writing multiple files
+- ...
+- ...
