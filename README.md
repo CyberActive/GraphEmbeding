@@ -20,3 +20,15 @@ The size of each graph is too big to visualize. Moreover, each graph is really a
 - a process is writing multiple files
 - ...
 - ...
+
+## Graph Embedding
+
+Graph embedding aims to create a numerical representation of graphs in order to achieve some specific goals. The goals are
+- Link prediction
+- Anomaly detection
+- Graph clustering
+
+There are a number of different graph embedding algorithms 
+
+
+Here we compare node2vec embedding with CyberActive open-sourced embedding. Our embedding is designed for dynamic graphs, such as StreamSpot. It applies batch processing by splitting a large and potentially 'infinite' streaming graph data into small subgraphs with the edges, which represent timestamped events, being in a close time proximity. Using this approach we account for both the structural and temporal proximity of different nodes in the graph.
