@@ -23,7 +23,7 @@ The size of each graph is in tens and hundreds of thousands of edges; it is too 
 
 ## Graph Embedding
 
-Graph embedding aims to create a numerical representation of graphs in order to achieve some specific goals. The goals are
+Graph embedding aims to create a numerical representation of graphs in order to achieve some specific goals. Some practical applications of graph embeddin are
 - Link prediction
 - Anomaly detection
 - Graph clustering
