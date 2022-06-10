@@ -29,6 +29,6 @@ Graph embedding aims to create a numerical representation of graphs in order to 
 - Graph clustering
 
 There are a number of different graph embedding algorithms 
-
+- [node2vec](https://github.com/aditya-grover/node2vec)
 
 Here we compare node2vec embedding with CyberActive open-sourced embedding. Our embedding is designed for dynamic graphs, such as StreamSpot. It applies batch processing by splitting a large and potentially 'infinite' streaming graph data into small subgraphs with the edges, which represent timestamped events, being in a close time proximity. Using this approach we account for both the structural and temporal proximity of different nodes in the graph.
