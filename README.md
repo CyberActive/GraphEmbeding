@@ -1,5 +1,5 @@
 # GraphEmbeding
-Illustration of graph embedding technique as applied to a specific data set
+<i> Illustration of graph embedding techniques as applied to a specific data set </i>
 
 Graphs are playing an ever important role in various areas of data science. The building blocks of graphs are nodes and edges (or links). There exists a number of different formats to store graph data. They all fall in the category of semi-structured data. 
 
@@ -16,10 +16,13 @@ See the [StreamSpot Explore Data.ipynb notebook](https://github.com/CyberActive/
 
 It is important to visualize data before doing any ML. This falls in the category if descriptive analytics. 
 
-The size of each graph is in tens and hundreds of thousands of edges; it is too big to visualize. Moreover, each graph is really a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to visualize a small subsets of the data. We can see that there are roughly speaking three types of subgraphs: 
+The size of each graph is in tens and hundreds of thousands of edges; it is too big to visualize. Moreover, each graph is really a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to split each graph in a set of subgraphs for the purpose of visualization and for any further analytics, including clustering. We can see the activities in each of the 600 graphs can be split roughlty into several distinct types:  
 - a process is performing single I/O operations with a large number of files
 - a process is performing multiple I/O operations with a small number of files, stin, and stdout
 - several processes and threads are performing I/O operations with several potentially overlapping files, stin, and stdout
+- a process performin single I/O operations witha large number of NA objects
+
+Not all subgraphs fall cleanly into one the above categories, but we feel that they can used as a basis for assessing how well clusterin works. 
 
 ## Graph Embedding
 
@@ -32,3 +35,5 @@ There are a number of different graph embedding algorithms
 - [node2vec](https://github.com/aditya-grover/node2vec)
 
 Here we compare node2vec embedding with CyberActive open-sourced embedding. Our embedding is designed for dynamic graphs, such as StreamSpot. It applies batch processing by splitting a large and potentially 'infinite' streaming graph data into small subgraphs with the edges, which represent timestamped events, being in a close time proximity. Using this approach we account for both the structural and temporal proximity of different nodes in the graph.
+
+What is presented here in no way represent a rigorous analysis and comparison of two graph embedding technique. But it is a usefull and practial introduction to such an analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
