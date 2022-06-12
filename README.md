@@ -43,4 +43,5 @@ There are a number of different graph embedding algorithms, here is a representa
 
 In this post we compare node2vec embedding with CyberActive open-sourced embedding. Our embedding is designed for dynamic graphs, such as StreamSpot. It applies batch processing by splitting a large and potentially 'infinite' streaming graph data into small subgraphs with the edges, which represent timestamped events, being in a close time proximity. Using this approach we account for both the structural and temporal proximity of different nodes in the graph.
 
+Node2vec clearly failed to separate between different subgraph types for YouTube, 
 What is presented here in no way represent a rigorous analysis and comparison of two graph embedding technique. But it is a usefull and practial introduction to such an analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
