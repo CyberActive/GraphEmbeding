@@ -15,16 +15,16 @@ Once the data is obtained, the next step in the data science process  is to the 
 The size of each graph is in tens and hundreds of thousands of edges; it is too big to visualize. Moreover, each graph is  a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to split each graph in a set of subgraphs for the purpose of visualization and for any further analytics, including clustering. We can see the activities in each of the 600 graphs can be split roughlty into several distinct types:  
 <br/>
 
-<img align="left" src="images/type1.png" height="70" /> <br/> a process/thread performing single I/O operations with a large number of files 
+1. <img align="left" src="images/type1.png" height="70" /> <br/> a process/thread performing single I/O operations with a large number of files 
 <br/><br/><br/>
 
-<img  align="left" src="images/type2.png" height="70" /><br/> a process/thread is performing multiple I/O operations with a small number of files, stin, and stdout
+2. <img  align="left" src="images/type2.png" height="70" /><br/> a process/thread is performing multiple I/O operations with a small number of files, stin, and stdout
 <br/><br/><br/>
 
-<img  align="left" src="images/type3.png" height="70" /> <br/>several processes and threads  performing I/O operations with several potentially overlapping files, stin, and stdout
+3. <img  align="left" src="images/type3.png" height="70" /> <br/>several processes and threads  performing I/O operations with several potentially overlapping files, stin, and stdout
 <br/><br/><br/>
 
-<img  align="left" src="images/type4.png" height="70" /> <br/>a process/thread performing single I/O operations witha large number of NA objects
+4. <img  align="left" src="images/type4.png" height="70" /> <br/>a process/thread performing single I/O operations witha large number of NA objects
 <br/><br/><br/>
 
 Not all subgraphs fall cleanly into one the above categories, but we feel that they can used as a basis for assessing the quality of clustering. 
@@ -43,5 +43,10 @@ There are a number of different graph embedding algorithms, here is a representa
 
 In this post we compare node2vec embedding with CyberActive open-sourced embedding. Our embedding is designed for dynamic graphs, such as StreamSpot. It applies batch processing by splitting a large and potentially 'infinite' streaming graph data into small subgraphs with the edges, which represent timestamped events, being in a close time proximity. Using this approach we account for both the structural and temporal proximity of different nodes in the graph.
 
-Node2vec clearly failed to separate between different subgraph types for YouTube, 
-What is presented here in no way represent a rigorous analysis and comparison of two graph embedding technique. But it is a usefull and practial introduction to such an analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
+## Clustering
+We use the common KMeans technique to perform clustering of subgraphs. The two notebooks [StreamSpot - Node2VecGraph Embedding]() and [StreamSpot - CyberActive Graph Embedding]() 
+
+Node2vec failed to adequately cluster the 6 selecte graphs. The largest failure is it's inability to properly separate the type 1 subgraphs <img src="images/type1.png" height="30" />
+
+## Conclusion
+What is presented here in no way represent a rigorous analysis and comparison of two graph embedding technique. But it is a usefull and practial introduction to such  analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
