@@ -17,10 +17,10 @@ See the [StreamSpot Explore Data.ipynb notebook](https://github.com/CyberActive/
 It is important to visualize data before doing any ML. This falls in the category if descriptive analytics. 
 
 The size of each graph is in tens and hundreds of thousands of edges; it is too big to visualize. Moreover, each graph is really a time progression, the processes captured there didn't happen at the same time. Therefore it is only reasonable to split each graph in a set of subgraphs for the purpose of visualization and for any further analytics, including clustering. We can see the activities in each of the 600 graphs can be split roughlty into several distinct types:  
-- a process is performing single I/O operations with a large number of files
-- a process is performing multiple I/O operations with a small number of files, stin, and stdout
-- several processes and threads are performing I/O operations with several potentially overlapping files, stin, and stdout
-- a process performin single I/O operations witha large number of NA objects
+- <img src="images/type1.png" height="40" /> a process is performing single I/O operations with a large number of files 
+- <img src="images/type2.png" height="40" /> a process is performing multiple I/O operations with a small number of files, stin, and stdout
+- <img src="images/type3.png" height="40" /> several processes and threads are performing I/O operations with several potentially overlapping files, stin, and stdout
+- <img src="images/type4.png" height="40" /> a process performin single I/O operations witha large number of NA objects
 
 Not all subgraphs fall cleanly into one the above categories, but we feel that they can used as a basis for assessing how well clusterin works. 
 
