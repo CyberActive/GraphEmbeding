@@ -50,7 +50,7 @@ Since the goal of this post is to perform qualitative comparison of different gr
 - Split one graph into small subgraphs
 - Compute their corresponding embedding vectors
 - Perform graph clustering using the common KMeans clustering technique
-The processing and results are presented in the two notebooks [StreamSpot - Node2Vec Graph Embedding]() and [StreamSpot - CyberActive Graph Embedding]() 
+The processing and results are presented in the two notebooks [StreamSpot - Node2Vec Graph Embedding](https://github.com/CyberActive/GraphEmbeding/blob/main/StreamSpot%20-%20Node2Vec%20Graph%20Embedding.ipynb) and [StreamSpot - CyberActive Graph Embedding](https://github.com/CyberActive/GraphEmbeding/blob/main/StreamSpot%20-%20CyberActive%20Graph%20Embeddinga.ipynb) 
 
 CyberActive embedding adequately clusters all 6 selected graphs. For each graph type the top content of each cluster consists of one uniform type of subgraphs. 
 
