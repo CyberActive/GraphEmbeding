@@ -50,9 +50,9 @@ Since the goal of this post is to perform qualitative comparison of different gr
 - Perform graph clustering using the common KMeans clustering technique
 The processing and results are presented in the two notebooks [StreamSpot - Node2Vec Graph Embedding]() and [StreamSpot - CyberActive Graph Embedding]() 
 
-CyberActive embedding adequately cluster all 6 selected graphs.
+CyberActive embedding adequately cluster all 6 selected graphs. For each graph type - YouTube, GMail, VGame, Attack, Download, and CNN - the top content of each cluster/component consisted of one uniform type of subgraphs. 
 
-Node2vec failed to adequately cluster the 6 selected graphs. The largest failure is it's inability to properly separate the type 1 subgraphs <img src="images/type1.png" height="30" />
+Node2vec failed to adequately cluster the 6 selected graphs. For each graph type at least one of the three clusters/components has multiple subgraph types mixed.The largest failure is its inability to properly separate the type 1 subgraphs <img src="images/type1.png" height="30" />
 
 ## Conclusion
 What is presented here in no way represent a rigorous analysis and comparison of two graph embedding technique. But it is a usefull and practial introduction to such  analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
