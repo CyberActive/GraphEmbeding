@@ -3,9 +3,9 @@
 
 Graphs are playing an ever important role in various areas of data science. The building blocks of graphs are nodes and edges (or links). There exists a number of different formats to store graph data. They all fall in the category of semi-structured data. 
 
-Graphs can be used for visualization of complex data, for logical reasoning, for machine learning (ML) and deep learning (DL). In order to be used for machine and deep learning the graph data have to be converted to the format the ML and DL algorithms 'understand'. This format consists of rows and columns of numbers, commonly known as numerical matrices. The conversion from the node-edge to a matrix representation is not trivial and not unique. There are multiple ways to convert the way graph to a numerical matrix. The benefits and downsides of each method depend on the application area. 
+Graphs can be used for visualization of complex data, for logical reasoning, for machine learning (ML) and deep learning (DL). In order to be used for machine and deep learning the graph data have to be converted to the format the ML and DL algorithms 'understand'. This format consists of rows and columns of numbers, commonly known as numerical matrices. The conversion from the node-edge to a matrix representation is not trivial and not unique. There are multiple ways to convert a graph to a numerical matrix. The benefits and downsides of each method depend on the application area. 
 
-The number of different ways to encode, or embed, graphs is constantly growning. It is not a goal of this repository  to present a complete, or even imcomplete list of graph embeddings developed up-to-date. Rather, the goal is to illustrate application of several graph embedding algorithms to one graph dataset. 
+The number of different ways to encode, or embed, graphs is constantly growning. It is not a goal of this repository  to present a complete, or even imcomplete list of graph embeddings developed up-to-date. Rather, the goal is to illustrate and compare two graph embedding algorithms - one well-known algorithm node2vec and a CyberActive inhouse algorith, when applied to one graph dataset. 
 
 ## Graph Dataset
 We use the  [StreamSpot](https://github.com/sbustreamspot/sbustreamspot-data) data set The StreamSpot dataset is composed of 600 provenance graphs derived from 5 benign and 1 attack scenarios. 
@@ -44,15 +44,17 @@ There are a number of different graph embedding algorithms, here is a representa
 In this post we compare node2vec embedding with CyberActive open-sourced embedding. Our embedding is designed for dynamic graphs, such as StreamSpot. It applies batch processing by splitting a large and potentially 'infinite' streaming graph data into small subgraphs with the edges, which represent timestamped events, being in a close time proximity. Using this approach we account for both the structural and temporal proximity of different nodes in the graph.
 
 ## Clustering
-Since the goal of this post is to perform qualitative comparison of different graph embeddings, we only perform clustering for one graph for each graph type (YouTube, GMail, VGame, Attack, Download, and CNN). We do the following
+Clustering is machine learning task that is also known as unsupervised learning.  The goal of clustering is dividing data objects into groups - clusters - in such a way that objects in the same cluster are more similar to each other than to those in other clusters.
+
+Since the goal of this post is to perform qualitative comparison of different graph embeddings, we only perform clustering for one graph for each graph type - YouTube, GMail, VGame, Attack, Download, and CNN. We do the following
 - Split one graph into small subgraphs
 - Compute their corresponding embedding vectors
 - Perform graph clustering using the common KMeans clustering technique
 The processing and results are presented in the two notebooks [StreamSpot - Node2Vec Graph Embedding]() and [StreamSpot - CyberActive Graph Embedding]() 
 
-CyberActive embedding adequately cluster all 6 selected graphs. For each graph type - YouTube, GMail, VGame, Attack, Download, and CNN - the top content of each cluster/component consisted of one uniform type of subgraphs. 
+CyberActive embedding adequately clusters all 6 selected graphs. For each graph type the top content of each cluster consists of one uniform type of subgraphs. 
 
-Node2vec failed to adequately cluster the 6 selected graphs. For each graph type at least one of the three clusters/components has multiple subgraph types mixed.The largest failure is its inability to properly separate the type 1 subgraphs <img src="images/type1.png" height="30" />
+Node2vec fails to adequately cluster the 6 selected graphs. For each graph type at least one of the three clusters has multiple subgraph types mixed.The largest failure is its inability to properly separate the type 1 subgraphs <img src="images/type1.png" height="30" />
 
 ## Conclusion
-What is presented here in no way represent a rigorous analysis and comparison of two graph embedding technique. But it is a usefull and practial introduction to such  analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
+What is presented here in no way represent a rigorous analysis and comparison of two graph embedding techniques. But it is a usefull and practial introduction to such  analysis. Another benefit of this analysis is visualization of subgraphs in the StreamSpot dataset, which to the best of our knowledge has not been done anywhere else. 
