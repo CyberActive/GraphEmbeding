@@ -32,7 +32,7 @@ Not all subgraphs fall cleanly into one the above categories, but we feel that t
 ## Graph Embedding
 
 As we mentioned above, in order to apply ML graph have to converted to a format amenable to ML algorithms. Graph embedding is one such approach. Some practical applications of graph embedding are
-- Link prediction
+- Link/edge prediction
 - Anomaly detection
 - Graph clustering
 
