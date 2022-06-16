@@ -133,36 +133,39 @@ def visualize_graphs(allgraphs, allcolors, indices, layout):
         #ax[i].set_axis_off()
         
     plt.show()
-    
-def process_data(graph_id, n_components, sentence_size = 100, epochs =1, verbose = False, datafile = './data/part.0.parquet'):
-    
-    panda_df = pd.read_parquet(datafile, filters = [('graph_id','==', graph_id)])
-    panda_df.reset_index(drop=True, inplace=True)
-    panda_df.dropna(inplace=True)
-    panda_df['graph_type'] = panda_df.graph_id.map(lambda x: graph_type_map[x])
-    graph_size = len(panda_df)
 
-    all_sentences = []
+def dataframe2graphs(data_df, sentence_size):
+
     all_graphs = []
     node_colors = []
-    number_sent = int(panda_df.shape[0]/sentence_size)
+    number_sent = int(data_df.shape[0]/sentence_size)
     for start in range(number_sent):
-        sub_chunk = panda_df[start*sentence_size:start*sentence_size+sentence_size]
+        sub_chunk = data_df[start*sentence_size:start*sentence_size+sentence_size]
         subG = create_multigraph_from_df(sub_chunk)
         colors = [color_map[x] for x in list(nx.get_node_attributes(subG, 'node_type').values())]
         all_graphs.append(subG)
         node_colors.append(colors)
+        
+    return all_graphs, node_colors
+
+def dataframe2sentences(data_df, sentence_size):
+
+    all_sentences = []
+    number_sent = int(data_df.shape[0]/sentence_size)
+    for start in range(number_sent):
+        sub_chunk = data_df[start*sentence_size:start*sentence_size+sentence_size]
         sent = []
         for _, row in sub_chunk[:sentence_size].iterrows():
             word = list(row[['source_type','edge_type', 'destination_type']])
             word = '_'.join(word)
             sent.append(word)
         all_sentences.append( sent)
+        
+    return all_sentences
 
+def sentence2doc2vec(sentences, epochs):
     textLabeled = []
-    for textID, sent in enumerate(all_sentences):
-
-    #    textL = TaggedDocument(words=text.split(), tags = ['text_%s' %textID])
+    for textID, sent in enumerate(sentences):
         textL = TaggedDocument(sent, tags = ['text_%s' %textID])
         textLabeled.append(textL)
 
@@ -175,20 +178,57 @@ def process_data(graph_id, n_components, sentence_size = 100, epochs =1, verbose
         doc2vec_model.train(textLabeled, total_examples=doc2vec_model.corpus_count, epochs=1)
         doc2vec_model.alpha -= 0.0001  # decrease the learning rate
         doc2vec_model.min_alpha = doc2vec_model.alpha  # fix the learning rate, no decay    
-    textVect = doc2vec_model.dv.vectors
+        
+    return doc2vec_model.dv.vectors
 
+def applyKMeans(Vect, n_components, verbose):
     km = KMeans(n_clusters=n_components, max_iter=10000)
-    km.fit(textVect)
-    sample_silhouette_values = silhouette_samples(textVect, km.labels_)
+    km.fit(Vect)
+    sample_silhouette_values = silhouette_samples(Vect, km.labels_)
     if verbose:
-        print (silhouette_score(textVect, km.labels_, sample_size=10000), np.mean(sample_silhouette_values))
+        print (silhouette_score(Vect, km.labels_, sample_size=10000), np.mean(sample_silhouette_values))
     for i in range(n_components):
         ith_cluster_silhouette_values = sample_silhouette_values[km.labels_ == i]
         if verbose:
             print (i, np.mean(ith_cluster_silhouette_values), np.min(ith_cluster_silhouette_values),
                    sum(ith_cluster_silhouette_values < 0)/len(ith_cluster_silhouette_values))    
-    display_silhouette(sample_silhouette_values, km.labels_, n_components, textVect.shape[0])
+    display_silhouette(sample_silhouette_values, km.labels_, n_components, Vect.shape[0])
+    return sample_silhouette_values, km
+
+def process_data(graph_id, n_components, sentence_size = 100, epochs =1, verbose = False, datafile = './data/part.0.parquet'):
+    
+    panda_df = pd.read_parquet(datafile, filters = [('graph_id','==', graph_id)])
+    panda_df.reset_index(drop=True, inplace=True)
+    panda_df.dropna(inplace=True)
+    panda_df['graph_type'] = panda_df.graph_id.map(lambda x: graph_type_map[x])
+    graph_size = len(panda_df)
+
+    all_graphs, node_colors = dataframe2graphs(panda_df, sentence_size)
+    all_sentences= dataframe2sentences(panda_df, sentence_size)
+
+    textVect = sentence2doc2vec(all_sentences, epochs)
+    sample_silhouette_values, km = applyKMeans(textVect, n_components, verbose)
+    
     return textVect, sample_silhouette_values, km, all_graphs, node_colors
+
+def dataframe2node2vec(data_df, node2vec_size, sub_graph_size):
+
+    graph_size = len(data_df)
+    all_node2vec = []
+    real_graph_size = 0
+    number_subgraphs = int(graph_size/sub_graph_size)
+    for start in range(number_subgraphs):
+        sub_chunk = data_df[start*sub_graph_size:start*sub_graph_size+sub_graph_size]
+  
+        sub_G = create_graph_from_df(sub_chunk)
+        real_graph_size += sub_G.size()
+
+        n2v = Node2Vec(sub_G, dimensions=node2vec_size, walk_length=16, num_walks=20, workers=4, quiet=True)
+        mod = n2v.fit(window=4, min_count=0)      
+        edge_vec = graph2vec_edge_arithmetic(sub_G, mod)
+        all_node2vec.append(edge_vec)
+
+    return np.array(all_node2vec)
 
 def process_data_node2vec(graph_id, n_components, node2vec_size = 20, sub_graph_size = 100, verbose = False, datafile = './data/part.0.parquet'):
     
@@ -198,40 +238,11 @@ def process_data_node2vec(graph_id, n_components, node2vec_size = 20, sub_graph_
     panda_df['graph_type'] = panda_df.graph_id.map(lambda x: graph_type_map[x])
     graph_size = len(panda_df)
 
-    all_sentences = []
-    all_graphs = []
-    node_colors = []
-    all_node2vec = []
-    real_graph_size = 0
-    number_subgraphs = int(graph_size/sub_graph_size)
-    for start in range(number_subgraphs):
-        sub_chunk = panda_df[start*sub_graph_size:start*sub_graph_size+sub_graph_size]
-        subG = create_multigraph_from_df(sub_chunk)
-        colors = [color_map[x] for x in list(nx.get_node_attributes(subG, 'node_type').values())]
-        all_graphs.append(subG)
-        node_colors.append(colors)
-        
-        sub_G = create_graph_from_df(sub_chunk)
-        real_graph_size += sub_G.size()
+    all_graphs, node_colors = dataframe2graphs(panda_df, sub_graph_size)
+    textVect = dataframe2node2vec(panda_df, node2vec_size, sub_graph_size)
 
-        n2v = Node2Vec(sub_G, dimensions=node2vec_size, walk_length=16, num_walks=20, workers=4, quiet=True)
-        mod = n2v.fit(window=4, min_count=0)      
-        edge_vec = graph2vec_edge_arithmetic(sub_G, mod)
-        all_node2vec.append(edge_vec)
-
-    textVect = np.array(all_node2vec)
-
-    km = KMeans(n_clusters=n_components, max_iter=10000)
-    km.fit(textVect)
-    sample_silhouette_values = silhouette_samples(textVect, km.labels_)
-    if verbose:
-        print (graph_size, real_graph_size, silhouette_score(textVect, km.labels_, sample_size=10000), np.mean(sample_silhouette_values))
-    for i in range(n_components):
-        ith_cluster_silhouette_values = sample_silhouette_values[km.labels_ == i]
-        if verbose:
-            print (i, np.mean(ith_cluster_silhouette_values), np.min(ith_cluster_silhouette_values),
-                   sum(ith_cluster_silhouette_values < 0)/len(ith_cluster_silhouette_values))    
-    display_silhouette(sample_silhouette_values, km.labels_, n_components, textVect.shape[0])
+    sample_silhouette_values, km = applyKMeans(textVect, n_components, verbose)
+    
     return textVect, sample_silhouette_values, km, all_graphs, node_colors
 
 node_edge_map = {
